@@ -1,14 +1,26 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UserController } from './user/user.controller';
+import { UserModule } from './user/user.module';
+import { User } from './user/entitys/user.entity';
 
-const DB_URL = 'mongodb+srv://shcherbakovkirill2:kirill2008@cluster0.6al4nhi.mongodb.net/?retryWrites=true&w=majority'
 
 @Module({
-  imports: [MongooseModule.forRoot(DB_URL)],
-  controllers: [AppController, UserController],
+  imports: [
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: 'localhost',
+      port: 5432,
+      username: 'postgres',
+      password: 'kirill2008',
+      database: 'SocialNetwork',
+      entities: [User],
+      synchronize: true,
+    })
+    , UserModule
+  ], 
+  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}
