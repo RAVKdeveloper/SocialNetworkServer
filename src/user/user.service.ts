@@ -17,11 +17,7 @@ export class UserService{
         return this.userRepository.find()
     }
 
-    async getById(id: number): Promise<User[]> {
-        return this.userRepository.findBy({ id })
-    }
-
-    async registration(userDto: CreateUserDTO) {
+    async registration(userDto: CreateUserDTO, respones) {
         const salt = await bcrypt.genSalt(10)
         const passwordHash = await bcrypt.hash(userDto.password, salt);
         const registr = {
@@ -37,7 +33,15 @@ export class UserService{
             password: passwordHash,
             sex: userDto.sex
         }
-        return this.userRepository.save(registr)
+
+        const user = await this.userRepository.save(registr)
+
+        const payload = { sub: user.id, name: user.name }
+        const token = await this.jwtService.signAsync(payload)
+
+        respones.cookie('tokenAuth', token)
+
+        return { access_token: token, user }
     }
     
     async checkPhone(phoneDto: CheckPhoneDto) {
@@ -48,7 +52,7 @@ export class UserService{
         return { message: 'nomber complete!!!' }
     }
 
-    async login(userDto: LoginUserDto) {
+    async login(userDto: LoginUserDto, respones) {
         const user = await this.userRepository.findBy({ phone: userDto.phone })
 
         if(user.length === 0) throw new HttpException('Неверный логин или пароль', HttpStatus.BAD_REQUEST)
@@ -57,14 +61,24 @@ export class UserService{
 
         if(!isValidPass) throw new HttpException('Неверный логин или пароль', HttpStatus.BAD_REQUEST)
 
-        const payload = { sub: user[0].id, username: user[0].name };
+        const payload = { sub: user[0].id, name: user[0].name };
 
         const { password, ...userData } = user[0]
 
+        const token = await this.jwtService.signAsync(payload)
+        
+        respones.cookie('tokenAuth', token)
+
         return {
-            access_token: await this.jwtService.signAsync(payload),
+            access_token: token,
             user: userData
           };
+    }
+
+    async me(id: number) {
+       const { password, ...userData } = await this.userRepository.findOneBy({ id })
+
+       return userData
     }
 }
  

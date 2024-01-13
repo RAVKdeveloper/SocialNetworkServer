@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Body, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, UseGuards, Res, Request } from '@nestjs/common';
 import { CreateUserDTO } from './dto/create-user.dto';
 import { UserService } from './user.service';
 import { CheckPhoneDto } from './dto/check-phone.dto';
@@ -16,19 +16,20 @@ export class UserController {
         return this.userService.getAll()
     }
 
-    @Get(':id')
-    getOne(@Param('id') id: string) {
-         return this.userService.getById(+id)
+    @UseGuards(AuthGuard)
+    @Get('auth/me')
+    me(@Request() request) {
+        return this.userService.me(Number(request.user.sub))
     }
 
     @Post('auth/registr')
-    registrationUser(@Body() CreateUserDTO: CreateUserDTO) {
-        return this.userService.registration(CreateUserDTO)
+    registrationUser(@Body() CreateUserDTO: CreateUserDTO, @Res({ passthrough: true }) respones: Response) {
+        return this.userService.registration(CreateUserDTO, respones)
     }
 
     @Post('auth/login')
-    loginUser(@Body() LoginUserDto: LoginUserDto) {
-        return this.userService.login(LoginUserDto)
+    loginUser(@Body() LoginUserDto: LoginUserDto, @Res({ passthrough: true }) respones: Response) {
+        return this.userService.login(LoginUserDto, respones)
     }
 
     @Post('/checkphone')
@@ -36,3 +37,4 @@ export class UserController {
         return this.userService.checkPhone(CheckPhoneDto)
     }
 }
+
