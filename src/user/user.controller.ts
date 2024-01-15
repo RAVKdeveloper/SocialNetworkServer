@@ -1,4 +1,7 @@
-import { Controller, Get, Post, Body, UseGuards, Res, Request } from '@nestjs/common';
+import { Controller, Get, Post, Body, UseGuards, Res, Request, UseInterceptors, UploadedFile } from '@nestjs/common';
+import * as path from 'path'
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer'
 import { CreateUserDTO } from './dto/create-user.dto';
 import { UserService } from './user.service';
 import { CheckPhoneDto } from './dto/check-phone.dto';
@@ -35,6 +38,25 @@ export class UserController {
     @Post('/checkphone')
     checkPhone(@Body() CheckPhoneDto: CheckPhoneDto ) {
         return this.userService.checkPhone(CheckPhoneDto)
+    }
+
+    @Post('/avatar')
+    @UseInterceptors(FileInterceptor('file', {
+        storage: diskStorage({
+            destination: "./uploads/avatar",
+            filename: (req, file, cb) => {
+                cb(null, `${file.originalname}`)
+            }
+        })
+    }))
+    uploadAvatar() {
+        return 'succes'
+    }
+
+    @Get('/addFiles')
+    getFile(@Res() res, @Body() file: { filename: string }) {
+         res.sendFile(path.join(__dirname, `../../uploads/avatar${file.filename}`))
+        // res.json(file.filename)
     }
 }
 

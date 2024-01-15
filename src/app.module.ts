@@ -1,9 +1,10 @@
-import { Module } from '@nestjs/common';
+import { Module, Search } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UserModule } from './user/user.module';
 import { User } from './user/entitys/user.entity';
+import { UserModule } from './user/user.module';
+import { SearchModule } from './search/search.module';
 
 
 @Module({
@@ -17,8 +18,9 @@ import { User } from './user/entitys/user.entity';
       database: 'SocialNetwork',
       entities: [User],
       synchronize: true,
-    })
-    , UserModule
+    }),
+     UserModule,
+     SearchModule
   ], 
   controllers: [AppController],
   providers: [AppService],
