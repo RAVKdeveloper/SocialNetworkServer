@@ -1,5 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import * as bcrypt from 'bcrypt'
+import * as path from 'path'
+import * as fs from 'fs'
 import { JwtService } from '@nestjs/jwt';
 import { Repository } from 'typeorm';
 import { InjectRepository } from "@nestjs/typeorm";
@@ -7,6 +9,7 @@ import { CreateUserDTO } from "./dto/create-user.dto";
 import { CheckPhoneDto } from "./dto/check-phone.dto";
 import { User } from "./entitys/user.entity";
 import { LoginUserDto } from "./dto/login-user.dto";
+import { UploadAvatarDto } from "./dto/uploadAvatar.dto";
 
 
 @Injectable() 
@@ -76,9 +79,25 @@ export class UserService{
     }
 
     async me(id: number) {
-       const { password, ...userData } = await this.userRepository.findOneBy({ id })
+       const { password, ...userData } = await this.userRepository.findOneBy({ id})
 
        return userData
+    }
+
+    async uploadAvatar(dto: UploadAvatarDto) {
+        const user = await this.userRepository.findOneBy({ id: Number(dto.id) })
+        
+        if(!user) return new HttpException('Пользователь не найден', HttpStatus.NOT_FOUND)
+
+        user.avatar = dto.file.filename
+ 
+        return this.userRepository.save(user)
+    }
+    
+    async deleteAvatar(id: string) {
+        const file = path.join(__dirname, `../../uploads/avatar/${id}`)
+        fs.unlink(file, err => console.log(err))
+        return { message: 'succes' }
     }
 }
  

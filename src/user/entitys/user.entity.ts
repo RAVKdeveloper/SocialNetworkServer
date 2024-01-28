@@ -1,4 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { PhotoUser } from 'src/userphoto/entitys/photo.entity';
+import { CommentsPhoto } from 'src/comments-photo/entities/comments-photo.entity';
 
 
 @Entity('user')
@@ -30,5 +32,9 @@ export class User {
     @Column()
     birthday: string
     @Column()
-    sex: string
+    sex: string 
+    @OneToMany(() => PhotoUser, (photo) => photo.user)
+    photos: PhotoUser[]
+    @OneToMany(() => CommentsPhoto, (comment) => comment.user)
+    commentsPhoto: CommentsPhoto[]
 }
