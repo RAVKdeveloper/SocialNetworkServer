@@ -10,6 +10,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe()),
   app.use(cookieParser()),
   app.useStaticAssets(path.join(__dirname, '../uploads/avatar')),
+  app.useStaticAssets(path.join(__dirname, '../uploads/userPhoto')),
   await app.listen(5000);
 }
 

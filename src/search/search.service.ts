@@ -17,8 +17,8 @@ export class SearchService {
            const users = await this.userRepository.find()
            const strSort = dto.sortBy.toLowerCase()
 
-           const sortUsers = users.filter(user => user.name.includes(strSort)
-           || user.surname.includes(strSort)
+           const sortUsers = users.filter(user => user.name.toLowerCase().includes(strSort.toLowerCase())
+           || user.surname.toLowerCase().includes(strSort.toLowerCase())
            )
 
            let res = this.maxSorting(sortUsers, Number(dto.limit))

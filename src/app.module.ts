@@ -9,6 +9,9 @@ import { SearchModule } from './search/search.module';
 import { PhotoUserModule } from './userphoto/photo.module';
 import { CommentsPhotoModule } from './comments-photo/comments-photo.module';
 import { CommentsPhoto } from './comments-photo/entities/comments-photo.entity';
+import { GaleryPhotoLikesModule } from './galery-photo-likes/galery-photo-likes.module';
+import { GaleryPhotoLike } from './galery-photo-likes/entities/galery-photo-like.entity';
+import { GaleryClipsModule } from './galery-clips/galery-clips.module';
 
 
 @Module({
@@ -20,13 +23,15 @@ import { CommentsPhoto } from './comments-photo/entities/comments-photo.entity';
       username: 'postgres',
       password: 'kirill2008',
       database: 'SocialNetwork',
-      entities: [User, PhotoUser, CommentsPhoto],
+      entities: [User, PhotoUser, CommentsPhoto, GaleryPhotoLike],
       synchronize: true,
     }),
      UserModule,
      SearchModule,
      PhotoUserModule,
      CommentsPhotoModule,
+     GaleryPhotoLikesModule,
+     GaleryClipsModule,
   ], 
   controllers: [AppController],
   providers: [AppService],

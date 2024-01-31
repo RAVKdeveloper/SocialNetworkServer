@@ -29,7 +29,13 @@ export class PhotoUserController {
    @Get()
    addPhotos(@Request() request) { 
     return this.service.getPhotos(request.user.sub) 
-  }
+   }
+
+   @UseGuards(AuthGuard)
+   @Get('/preview')
+   getPreviewPhotos(@Request() request) {
+    return this.service.getPreviewPhoto(Number(request.user.sub))
+   }
 
   @UseGuards(AuthGuard)
   @Get('/:id')

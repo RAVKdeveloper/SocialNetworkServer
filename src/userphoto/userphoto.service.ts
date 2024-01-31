@@ -18,14 +18,29 @@ export class PhotoUserService {
 
     async getPhotos(userId: number) {
         const photos = await this.photoRepo.find({ relations: {
-            user: true
+            user: true,
+            likesPhoto: true
         }, where: { user: { id: userId } }})
         
         return photos
     }
 
+    async getPreviewPhoto(userId: number) {
+        const photos = await this.photoRepo.find({ relations: {
+            user: true,
+            likesPhoto: true
+        }, where: { user: { id: userId } }})
+
+        const arr = photos.sort((a, b) => a.id - b.id).reverse()
+
+        return this.maxPhotos(arr, 3)
+    }
+
     async getOnePhoto(id: number) {
-        const photo = await this.photoRepo.findOneBy({ id })
+        const photo = await this.photoRepo.findOne({ relations: {
+            likesPhoto: true, 
+            user: true
+        }, where: { id } })
 
         if(!photo) throw new HttpException('Фото не найденно', HttpStatus.NOT_FOUND)
 
@@ -38,5 +53,15 @@ export class PhotoUserService {
         const file = path.join(__dirname, `../../uploads/userPhoto/${photo.photo}`)
         fs.unlink(file, err => console.log(err))
         return this.photoRepo.delete(id)
+    }
+
+    async maxPhotos(arr: any, count: number) {
+       let result = []
+
+       for(let i = 0; i < count; i++) {
+          if(arr[i]) result.push(arr[i]) 
+       }
+
+       return result
     }
 } 
