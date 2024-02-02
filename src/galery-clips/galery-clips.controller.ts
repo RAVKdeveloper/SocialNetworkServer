@@ -1,34 +1,50 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UseGuards, UploadedFile, Request } from '@nestjs/common';
+import { v4 as uuidv4 } from 'uuid';
+import { diskStorage } from 'multer';
 import { GaleryClipsService } from './galery-clips.service';
-import { CreateGaleryClipDto } from './dto/create-galery-clip.dto';
-import { UpdateGaleryClipDto } from './dto/update-galery-clip.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { AuthGuard } from 'src/user/guards/local-auth.guard';
 
 @Controller('galery-clips')
 export class GaleryClipsController {
-  constructor(private readonly galeryClipsService: GaleryClipsService) {}
 
+  constructor(private readonly service: GaleryClipsService) {}
+
+  @UseGuards(AuthGuard)
+  @UseInterceptors(FileInterceptor('clip', {
+    storage: diskStorage({
+       destination: "./uploads/userClips",
+           filename: (req, file, cb) => {
+               const type = file.originalname.split('.')
+               cb(null, `clipUser${uuidv4()}.${type[1]}`)
+           }
+    })
+  }))
   @Post()
-  create(@Body() createGaleryClipDto: CreateGaleryClipDto) {
-    return this.galeryClipsService.create(createGaleryClipDto);
+  create(@UploadedFile() file, @Request() request) {
+     return this.service.create(file.filename, request.user.sub);
   }
 
+  @UseGuards(AuthGuard)
+  @Get('preview')
+  getPreview(@Request() request) {
+      return this.service.getPreview(request.user.sub)
+  }
+
+  @UseGuards(AuthGuard)
   @Get()
-  findAll() {
-    return this.galeryClipsService.findAll();
+  findAll(@Request() request) {
+    return this.service.findAll(request.user.sub);
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.galeryClipsService.findOne(+id);
+    return this.service.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateGaleryClipDto: UpdateGaleryClipDto) {
-    return this.galeryClipsService.update(+id, updateGaleryClipDto);
-  }
-
+  @UseGuards(AuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.galeryClipsService.remove(+id);
+    return this.service.remove(+id);
   }
 }

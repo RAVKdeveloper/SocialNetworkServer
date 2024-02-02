@@ -11,10 +11,10 @@ export class CommentsPhotoService {
 
   constructor(@InjectRepository(CommentsPhoto) private commentsRepo: Repository<CommentsPhoto>) {}
 
-  create(createCommentsPhotoDto: CreateCommentsPhotoDto, userId: number) {
+  async create(createCommentsPhotoDto: CreateCommentsPhotoDto, userId: number) {
       const { text, photo } = createCommentsPhotoDto
 
-      return this.commentsRepo.save({ text, photo: { id: photo }, user: { id: userId } })
+      return this.commentsRepo.save({ text, user: { id: userId }, photo: { id: photo } })
   }
 
   getComments(photoId: number) {
@@ -38,3 +38,4 @@ export class CommentsPhotoService {
     return this.commentsRepo.delete(id)
   }
 }
+ 

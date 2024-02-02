@@ -3,6 +3,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from 'typeorm';
 import { User } from "src/user/entitys/user.entity";
 import { SortingDto } from "./dto/sortingDto.dto";
+import { ILike } from 'typeorm'
 
 
 @Injectable()
@@ -11,32 +12,19 @@ export class SearchService {
 
     async getSearchUserandClubs(dto: SortingDto) {
          if(dto.action === "all") { 
-            const users = await this.userRepository.find()
-            return this.maxSorting(users, Number(JSON.parse(dto.limit)))
+            const users = await this.userRepository.find({ take: Number(dto.limit), order: { followers: 'DESC' } })
+            return users
          } else if(dto.action === 'limits') {
-           const users = await this.userRepository.find()
-           const strSort = dto.sortBy.toLowerCase()
-
-           const sortUsers = users.filter(user => user.name.toLowerCase().includes(strSort.toLowerCase())
-           || user.surname.toLowerCase().includes(strSort.toLowerCase())
-           )
-
-           let res = this.maxSorting(sortUsers, Number(dto.limit))
-
-           return res
+           const users = await this.userRepository.find({ 
+            take: Number(dto.limit), 
+            order: { followers: 'DESC' },
+            where: [
+            { name: ILike(`%${dto.sortBy.toLowerCase()}%`) },
+            { surname: ILike(`%${dto.sortBy.toLowerCase()}%`) }
+        ]})
+        
+           return users
          }
     }
 
-    async maxSorting(arr: any, current: number) {
-
-        let resArr = []
-
-         for(let i = 0; i < current; i++) {
-             if(arr[i] != null) {
-                 resArr.push(arr[i])
-            }
-         }
-
-         return resArr
-    }
 }    

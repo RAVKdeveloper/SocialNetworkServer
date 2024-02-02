@@ -12,6 +12,7 @@ import { CommentsPhoto } from './comments-photo/entities/comments-photo.entity';
 import { GaleryPhotoLikesModule } from './galery-photo-likes/galery-photo-likes.module';
 import { GaleryPhotoLike } from './galery-photo-likes/entities/galery-photo-like.entity';
 import { GaleryClipsModule } from './galery-clips/galery-clips.module';
+import { GaleryClip } from './galery-clips/entities/galery-clip.entity';
 
 
 @Module({
@@ -23,7 +24,7 @@ import { GaleryClipsModule } from './galery-clips/galery-clips.module';
       username: 'postgres',
       password: 'kirill2008',
       database: 'SocialNetwork',
-      entities: [User, PhotoUser, CommentsPhoto, GaleryPhotoLike],
+      entities: [User, PhotoUser, CommentsPhoto, GaleryPhotoLike, GaleryClip],
       synchronize: true,
     }),
      UserModule,

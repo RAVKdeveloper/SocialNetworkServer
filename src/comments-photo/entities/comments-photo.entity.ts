@@ -13,11 +13,16 @@ export class CommentsPhoto {
     @ManyToOne(() => User, (user) => user.commentsPhoto, { nullable: false })
     @JoinColumn({ name: 'userId' })
     user: User
-    @ManyToOne(() => PhotoUser, { nullable: false })
-    @JoinTable()
+    @ManyToOne(() => PhotoUser, (photo) => photo.commentsPhoto, { 
+        nullable: false, 
+        onDelete: 'CASCADE', 
+        onUpdate:'CASCADE' 
+    })
+    @JoinColumn()
     photo: PhotoUser
     @CreateDateColumn({ type: 'timestamp' })
     createAt: Date;
     @UpdateDateColumn({ type: 'timestamp' })
     updateAt: Date;
-}
+}  
+  

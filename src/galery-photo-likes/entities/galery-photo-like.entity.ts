@@ -9,7 +9,12 @@ export class GaleryPhotoLike {
     @ManyToOne(() => User, { nullable: false })
     @JoinColumn({ name: 'userId' })
     user: User
-    @ManyToOne(() => PhotoUser, { nullable: false })
+    @ManyToOne(() => PhotoUser, (photo) => photo.likesPhoto, { 
+        nullable: false,
+        cascade: true, 
+        onDelete: 'CASCADE', 
+        onUpdate:'CASCADE'  
+    })
     @JoinTable()
     photo: PhotoUser
     @CreateDateColumn({ type: 'timestamp' })

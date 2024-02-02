@@ -1,26 +1,49 @@
-import { Injectable } from '@nestjs/common';
-import { CreateGaleryClipDto } from './dto/create-galery-clip.dto';
-import { UpdateGaleryClipDto } from './dto/update-galery-clip.dto';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import * as path from 'path'
+import * as fs from 'fs'
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from 'typeorm';
+
+import { GaleryClip } from './entities/galery-clip.entity';
+
 
 @Injectable()
 export class GaleryClipsService {
-  create(createGaleryClipDto: CreateGaleryClipDto) {
-    return 'This action adds a new galeryClip';
+
+  constructor(@InjectRepository(GaleryClip) private clipRepo: Repository<GaleryClip>) {}
+
+  create(videoName: string, userId: number) {
+      return this.clipRepo.save({ video: videoName, user: { id: userId } })
   }
 
-  findAll() {
-    return `This action returns all galeryClips`;
+  async getPreview(userId: number) {
+      const clips = await this.clipRepo.find({ relations: {
+        user: true
+      }, where: { user: { id: userId } }, take: 3, skip: 0, cache: true, order: { id: 'DESC' } })
+
+      return clips
+  }
+
+  findAll(id: number) {
+    return this.clipRepo.find({ relations: {
+      user: true
+    }, where: { user: { id } } })
   }
 
   findOne(id: number) {
-    return `This action returns a #${id} galeryClip`;
+    return this.clipRepo.findOne({ relations: {
+      user: true
+    }, where: { id } })
   }
 
-  update(id: number, updateGaleryClipDto: UpdateGaleryClipDto) {
-    return `This action updates a #${id} galeryClip`;
-  }
+  async remove(id: number) {
+     const video = await this.clipRepo.findOne({ where: { id } })
 
-  remove(id: number) {
-    return `This action removes a #${id} galeryClip`;
+     if(!video) throw new HttpException('Фото не найденно', HttpStatus.NOT_FOUND)
+
+     const file = path.join(__dirname, `../../uploads/userClips/${video.video}`)
+     fs.unlink(file, err => { return err })
+
+     return this.clipRepo.delete(id)
   }
 }

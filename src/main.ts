@@ -11,6 +11,7 @@ async function bootstrap() {
   app.use(cookieParser()),
   app.useStaticAssets(path.join(__dirname, '../uploads/avatar')),
   app.useStaticAssets(path.join(__dirname, '../uploads/userPhoto')),
+  app.useStaticAssets(path.join(__dirname, '../uploads/userClips')),
   await app.listen(5000);
 }
 
