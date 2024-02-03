@@ -8,6 +8,18 @@ export class GaleryClip {
     id: number
     @Column()
     video: string
+    @Column({ default: '' })
+    preview: string
+    @Column({ default: '' })
+    description: string
+    @Column({ default: true })
+    isComments: boolean
+    @Column({ default: 'all' })
+    visible: string
+    @Column({ default: 0 })
+    views: number
+    @Column({ default: false })
+    confirm: boolean
     @ManyToOne(() => User, { nullable: false })
     @JoinColumn({ name: 'userId' })
     user: User

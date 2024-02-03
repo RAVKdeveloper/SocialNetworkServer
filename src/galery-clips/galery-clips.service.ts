@@ -5,6 +5,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from 'typeorm';
 
 import { GaleryClip } from './entities/galery-clip.entity';
+import { UpdateClipDto } from './dto/update-clip.dto';
 
 
 @Injectable()
@@ -19,7 +20,7 @@ export class GaleryClipsService {
   async getPreview(userId: number) {
       const clips = await this.clipRepo.find({ relations: {
         user: true
-      }, where: { user: { id: userId } }, take: 3, skip: 0, cache: true, order: { id: 'DESC' } })
+      }, where: { user: { id: userId }, confirm: true }, take: 3, skip: 0, cache: true, order: { id: 'DESC' } })
 
       return clips
   }
@@ -27,13 +28,18 @@ export class GaleryClipsService {
   findAll(id: number) {
     return this.clipRepo.find({ relations: {
       user: true
-    }, where: { user: { id } } })
+    }, where: { user: { id }, confirm: true } })
   }
 
-  findOne(id: number) {
-    return this.clipRepo.findOne({ relations: {
+  async findOne(id: number) {
+    const clip = await this.clipRepo.findOne({ relations: {
       user: true
     }, where: { id } })
+
+    clip.views = clip.views + 1
+    await this.clipRepo.save(clip)
+
+    return clip
   }
 
   async remove(id: number) {
@@ -46,4 +52,18 @@ export class GaleryClipsService {
 
      return this.clipRepo.delete(id)
   }
+
+  async updateClip(id: number, dto: UpdateClipDto) {
+     const clip = await this.clipRepo.findOne({ where: { id } })
+     clip.preview = dto.preview
+     clip.description = dto.description
+     clip.isComments = dto.isComments
+     clip.visible = dto.visible
+     clip.confirm = dto.confirm
+     clip.views = 0
+
+     return this.clipRepo.save(clip)
+  }
+
 }
+ 

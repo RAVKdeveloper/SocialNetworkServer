@@ -1,9 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UseGuards, UploadedFile, Request } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UseGuards, UploadedFile, Request, Put } from '@nestjs/common';
 import { v4 as uuidv4 } from 'uuid';
 import { diskStorage } from 'multer';
 import { GaleryClipsService } from './galery-clips.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthGuard } from 'src/user/guards/local-auth.guard';
+import { UpdateClipDto } from './dto/update-clip.dto';
 
 @Controller('galery-clips')
 export class GaleryClipsController {
@@ -37,10 +38,16 @@ export class GaleryClipsController {
     return this.service.findAll(request.user.sub);
   }
 
+  @UseGuards(AuthGuard)
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.service.findOne(+id);
   }
+
+  @Put(':id')
+  update(@Param('id') id: number, @Body() dto: UpdateClipDto) {
+    return this.service.updateClip(id, dto)
+  } 
 
   @UseGuards(AuthGuard)
   @Delete(':id')
