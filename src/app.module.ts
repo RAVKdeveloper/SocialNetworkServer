@@ -13,6 +13,11 @@ import { GaleryPhotoLikesModule } from './galery-photo-likes/galery-photo-likes.
 import { GaleryPhotoLike } from './galery-photo-likes/entities/galery-photo-like.entity';
 import { GaleryClipsModule } from './galery-clips/galery-clips.module';
 import { GaleryClip } from './galery-clips/entities/galery-clip.entity';
+import { GaleryClipsLikesModule } from './galery-clips-likes/galery-clips-likes.module';
+import { GaleryClipsLike } from './galery-clips-likes/entities/galery-clips-like.entity';
+import { GaleryClipsComment } from './galery-clips/galery-clips-comments/entities/galery-clips-comment.entity';
+import { WallPost } from './UserWall/create-post/entities/create-post.entity';
+import { WallPostModule } from './UserWall/create-post/create-post.module';
 
 
 @Module({
@@ -24,7 +29,7 @@ import { GaleryClip } from './galery-clips/entities/galery-clip.entity';
       username: 'postgres',
       password: 'kirill2008',
       database: 'SocialNetwork',
-      entities: [User, PhotoUser, CommentsPhoto, GaleryPhotoLike, GaleryClip],
+      entities: [User, PhotoUser, CommentsPhoto, GaleryPhotoLike, GaleryClip, GaleryClipsLike, GaleryClipsComment, WallPost],
       synchronize: true,
     }),
      UserModule,
@@ -33,6 +38,8 @@ import { GaleryClip } from './galery-clips/entities/galery-clip.entity';
      CommentsPhotoModule,
      GaleryPhotoLikesModule,
      GaleryClipsModule,
+     GaleryClipsLikesModule,
+     WallPostModule
   ], 
   controllers: [AppController],
   providers: [AppService],

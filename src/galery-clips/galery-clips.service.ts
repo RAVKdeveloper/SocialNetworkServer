@@ -51,7 +51,7 @@ export class GaleryClipsService {
      fs.unlink(file, err => { return err })
 
      return this.clipRepo.delete(id)
-  }
+  } 
 
   async updateClip(id: number, dto: UpdateClipDto) {
      const clip = await this.clipRepo.findOne({ where: { id } })

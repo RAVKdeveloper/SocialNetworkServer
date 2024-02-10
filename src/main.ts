@@ -12,6 +12,7 @@ async function bootstrap() {
   app.useStaticAssets(path.join(__dirname, '../uploads/avatar')),
   app.useStaticAssets(path.join(__dirname, '../uploads/userPhoto')),
   app.useStaticAssets(path.join(__dirname, '../uploads/userClips')),
+  app.useStaticAssets(path.join(__dirname, '../uploads/WallMedia')),
   await app.listen(5000);
 }
 
