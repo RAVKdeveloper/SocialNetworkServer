@@ -47,11 +47,6 @@ export class WallPostController {
     return this.service.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCreatePostDto: UpdateCreatePostDto) {
-    return this.service.update(+id, updateCreatePostDto);
-  }
-
   @UseGuards(AuthGuard)
   @Delete(':id')
   remove(@Param('id') id: string, @Req() request) {
