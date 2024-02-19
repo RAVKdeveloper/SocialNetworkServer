@@ -11,7 +11,9 @@ describe('GaleryClipsCommentsController', () => {
       providers: [GaleryClipsCommentsService],
     }).compile();
 
-    controller = module.get<GaleryClipsCommentsController>(GaleryClipsCommentsController);
+    controller = module.get<GaleryClipsCommentsController>(
+      GaleryClipsCommentsController,
+    );
   });
 
   it('should be defined', () => {

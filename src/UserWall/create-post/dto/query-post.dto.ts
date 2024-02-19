@@ -1,15 +1,14 @@
-import { IsNotEmpty } from "class-validator"
+import { IsNotEmpty } from 'class-validator';
 
 export class QueryPostDto {
+  @IsNotEmpty()
+  readonly limit: string;
 
-    @IsNotEmpty()
-    readonly limit: string
+  @IsNotEmpty()
+  readonly page: string;
 
-    @IsNotEmpty()
-    readonly page: string
+  @IsNotEmpty()
+  readonly action: string;
 
-    @IsNotEmpty()
-    readonly action: string
-
-    readonly searchText: string
+  readonly searchText: string;
 }

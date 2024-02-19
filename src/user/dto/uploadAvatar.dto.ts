@@ -1,4 +1,4 @@
 export class UploadAvatarDto {
-    readonly file: any
-    readonly id: string
+  readonly file: any;
+  readonly id: string;
 }

@@ -1,11 +1,20 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Request, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
 import { GaleryClipsCommentsService } from './galery-clips-comments.service';
 import { CreateGaleryClipsCommentDto } from './dto/create-galery-clips-comment.dto';
 import { AuthGuard } from 'src/user/guards/local-auth.guard';
 
 @Controller('clips/galery-clips-comments')
 export class GaleryClipsCommentsController {
-
   constructor(private readonly service: GaleryClipsCommentsService) {}
 
   @UseGuards(AuthGuard)

@@ -8,12 +8,12 @@ import { GaleryClipsLike } from './entities/galery-clips-like.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([ GaleryClipsLike ]),
+    TypeOrmModule.forFeature([GaleryClipsLike]),
     JwtModule.register({
-     global: true,
-     secret: 'secret123',
-     signOptions: { expiresIn: '30d' },
-   }),
+      global: true,
+      secret: 'secret123',
+      signOptions: { expiresIn: '30d' },
+    }),
   ],
   controllers: [GaleryClipsLikesController],
   providers: [GaleryClipsLikesService],

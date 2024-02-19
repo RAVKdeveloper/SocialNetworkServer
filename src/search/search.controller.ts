@@ -5,11 +5,11 @@ import { SortingDto } from './dto/sortingDto.dto';
 
 @Controller('search')
 export class SearchController {
-    constructor(private readonly SearchService: SearchService ) {}
+  constructor(private readonly SearchService: SearchService) {}
 
-    @UseGuards(AuthGuard)
-    @Get()
-    allusersAndClubs(@Query() dto: SortingDto) {
-        return this.SearchService.getSearchUserandClubs(dto)
-    }
+  @UseGuards(AuthGuard)
+  @Get()
+  allusersAndClubs(@Query() dto: SortingDto) {
+    return this.SearchService.getSearchUserandClubs(dto);
+  }
 }

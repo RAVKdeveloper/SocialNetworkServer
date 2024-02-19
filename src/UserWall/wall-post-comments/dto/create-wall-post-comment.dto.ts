@@ -1,12 +1,10 @@
-import { IsNotEmpty } from "class-validator";
+import { IsNotEmpty } from 'class-validator';
 
 export class CreateWallPostCommentDto {
+  readonly text: string;
 
-    readonly text: string
+  @IsNotEmpty()
+  readonly postId: number;
 
-    @IsNotEmpty()
-    readonly postId: number
-
-    readonly answerRef: string
-
+  readonly answerRef: string;
 }

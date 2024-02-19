@@ -1,7 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Request } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Request,
+} from '@nestjs/common';
 import { AuthGuard } from 'src/user/guards/local-auth.guard';
 import { GaleryClipsLikesService } from './galery-clips-likes.service';
-
 
 @Controller('galery-clips-likes')
 export class GaleryClipsLikesController {

@@ -1,10 +1,9 @@
-import { IsNotEmpty } from "class-validator"
+import { IsNotEmpty } from 'class-validator';
 
 export class CreateGaleryClipsCommentDto {
+  @IsNotEmpty()
+  readonly text: string;
 
-    @IsNotEmpty()
-    readonly text: string
-
-    @IsNotEmpty()
-    readonly clipId: number
+  @IsNotEmpty()
+  readonly clipId: number;
 }

@@ -11,7 +11,9 @@ describe('GaleryClipsLikesController', () => {
       providers: [GaleryClipsLikesService],
     }).compile();
 
-    controller = module.get<GaleryClipsLikesController>(GaleryClipsLikesController);
+    controller = module.get<GaleryClipsLikesController>(
+      GaleryClipsLikesController,
+    );
   });
 
   it('should be defined', () => {

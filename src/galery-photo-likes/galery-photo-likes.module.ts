@@ -8,12 +8,12 @@ import { GaleryPhotoLike } from './entities/galery-photo-like.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([ GaleryPhotoLike ]),
+    TypeOrmModule.forFeature([GaleryPhotoLike]),
     JwtModule.register({
-     global: true,
-     secret: 'secret123',
-     signOptions: { expiresIn: '30d' },
-   }),
+      global: true,
+      secret: 'secret123',
+      signOptions: { expiresIn: '30d' },
+    }),
   ],
   controllers: [GaleryPhotoLikesController],
   providers: [GaleryPhotoLikesService],

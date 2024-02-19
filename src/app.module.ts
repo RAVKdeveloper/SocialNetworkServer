@@ -23,7 +23,7 @@ import { WallPostLikesModule } from './UserWall/wall-post-likes/wall-post-likes.
 import { OptionsPostModule } from './UserWall/options-post/options-post.module';
 import { WallPostCommentsModule } from './UserWall/wall-post-comments/wall-post-comments.module';
 import { WallPostComment } from './UserWall/wall-post-comments/entities/wall-post-comment.entity';
-
+import { FriendsModule } from './friends/friends.module';
 
 @Module({
   imports: [
@@ -35,24 +35,32 @@ import { WallPostComment } from './UserWall/wall-post-comments/entities/wall-pos
       password: 'kirill2008',
       database: 'SocialNetwork',
       entities: [
-        User, PhotoUser, CommentsPhoto, GaleryPhotoLike, GaleryClip, 
-        GaleryClipsLike, GaleryClipsComment, WallPost,
-        WallPostLike, WallPostComment
+        User,
+        PhotoUser,
+        CommentsPhoto,
+        GaleryPhotoLike,
+        GaleryClip,
+        GaleryClipsLike,
+        GaleryClipsComment,
+        WallPost,
+        WallPostLike,
+        WallPostComment,
       ],
       synchronize: true,
     }),
-     UserModule,
-     SearchModule,
-     PhotoUserModule,
-     CommentsPhotoModule,
-     GaleryPhotoLikesModule,
-     GaleryClipsModule,
-     GaleryClipsLikesModule,
-     WallPostModule,
-     WallPostLikesModule,
-     OptionsPostModule,
-     WallPostCommentsModule
-  ], 
+    UserModule,
+    SearchModule,
+    PhotoUserModule,
+    CommentsPhotoModule,
+    GaleryPhotoLikesModule,
+    GaleryClipsModule,
+    GaleryClipsLikesModule,
+    WallPostModule,
+    WallPostLikesModule,
+    OptionsPostModule,
+    WallPostCommentsModule,
+    FriendsModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

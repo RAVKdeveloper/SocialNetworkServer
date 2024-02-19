@@ -6,15 +6,14 @@ import { WallPostLikesService } from './wall-post-likes.service';
 import { WallPostLikesController } from './wall-post-likes.controller';
 import { WallPostLike } from './entities/wall-post-like.entity';
 
-
 @Module({
   imports: [
-    TypeOrmModule.forFeature([ WallPostLike ]),
+    TypeOrmModule.forFeature([WallPostLike]),
     JwtModule.register({
-     global: true,
-     secret: 'secret123',
-     signOptions: { expiresIn: '30d' },
-   }),
+      global: true,
+      secret: 'secret123',
+      signOptions: { expiresIn: '30d' },
+    }),
   ],
   controllers: [WallPostLikesController],
   providers: [WallPostLikesService],

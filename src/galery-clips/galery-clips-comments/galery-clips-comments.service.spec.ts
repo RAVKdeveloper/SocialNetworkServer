@@ -9,7 +9,9 @@ describe('GaleryClipsCommentsService', () => {
       providers: [GaleryClipsCommentsService],
     }).compile();
 
-    service = module.get<GaleryClipsCommentsService>(GaleryClipsCommentsService);
+    service = module.get<GaleryClipsCommentsService>(
+      GaleryClipsCommentsService,
+    );
   });
 
   it('should be defined', () => {

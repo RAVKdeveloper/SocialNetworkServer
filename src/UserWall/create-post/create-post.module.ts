@@ -8,12 +8,12 @@ import { WallPost } from './entities/create-post.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([ WallPost ]),
+    TypeOrmModule.forFeature([WallPost]),
     JwtModule.register({
-     global: true,
-     secret: 'secret123',
-     signOptions: { expiresIn: '30d' },
-   }),
+      global: true,
+      secret: 'secret123',
+      signOptions: { expiresIn: '30d' },
+    }),
   ],
   controllers: [WallPostController],
   providers: [CreatePostService],

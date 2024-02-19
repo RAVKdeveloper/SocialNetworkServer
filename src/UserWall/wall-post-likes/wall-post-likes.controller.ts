@@ -1,7 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Req, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { WallPostLikesService } from './wall-post-likes.service';
 import { AuthGuard } from 'src/user/guards/local-auth.guard';
-
 
 @Controller('wall/post-likes')
 export class WallPostLikesController {

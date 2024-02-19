@@ -11,7 +11,9 @@ describe('WallPostCommentsController', () => {
       providers: [WallPostCommentsService],
     }).compile();
 
-    controller = module.get<WallPostCommentsController>(WallPostCommentsController);
+    controller = module.get<WallPostCommentsController>(
+      WallPostCommentsController,
+    );
   });
 
   it('should be defined', () => {

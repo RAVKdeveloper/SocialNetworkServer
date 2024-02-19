@@ -1,10 +1,9 @@
-import { IsNotEmpty } from "class-validator"
+import { IsNotEmpty } from 'class-validator';
 
 export class CreateCommentsPhotoDto {
+  @IsNotEmpty()
+  readonly text: string;
 
-    @IsNotEmpty()
-    readonly text: string
-
-    @IsNotEmpty()
-    readonly photo: number
+  @IsNotEmpty()
+  readonly photo: number;
 }

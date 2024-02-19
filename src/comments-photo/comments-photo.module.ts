@@ -8,12 +8,12 @@ import { CommentsPhoto } from './entities/comments-photo.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([ CommentsPhoto ]),
+    TypeOrmModule.forFeature([CommentsPhoto]),
     JwtModule.register({
-     global: true,
-     secret: 'secret123',
-     signOptions: { expiresIn: '30d' },
-   }),
+      global: true,
+      secret: 'secret123',
+      signOptions: { expiresIn: '30d' },
+    }),
   ],
   controllers: [CommentsPhotoController],
   providers: [CommentsPhotoService],
