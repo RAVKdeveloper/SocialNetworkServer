@@ -3,15 +3,15 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
   Delete,
   Req,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { FriendsService } from './friends.service';
 import { CreateFriendDto } from './dto/create-friend.dto';
-import { UpdateFriendDto } from './dto/update-friend.dto';
+import { AcceptFriendsDto } from './dto/accept-friend.dto';
 import { AuthGuard } from 'src/user/guards/local-auth.guard';
 
 @Controller('friends')
@@ -23,19 +23,27 @@ export class FriendsController {
     return this.service.create(dto, request.user.sub);
   }
 
+  @UseGuards(AuthGuard)
+  @Post('accept')
+  acceptFrient(@Body() dto: AcceptFriendsDto) {
+    return this.service.accept(dto);
+  }
+
+  @UseGuards(AuthGuard)
   @Get()
-  findAll() {
-    return this.service.findAll();
+  findAll(@Req() request) {
+    return this.service.findAll(request.user.sub);
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('preview')
+  findPreview(@Req() request, @Query('limit') limit: number) {
+    return this.service.findPreview(request.user.sub, limit);
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.service.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateFriendDto: UpdateFriendDto) {
-    return this.service.update(+id, updateFriendDto);
   }
 
   @Delete(':id')

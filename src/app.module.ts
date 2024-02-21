@@ -1,4 +1,4 @@
-import { Module, Search } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -24,6 +24,9 @@ import { OptionsPostModule } from './UserWall/options-post/options-post.module';
 import { WallPostCommentsModule } from './UserWall/wall-post-comments/wall-post-comments.module';
 import { WallPostComment } from './UserWall/wall-post-comments/entities/wall-post-comment.entity';
 import { FriendsModule } from './friends/friends.module';
+import { Friend } from './friends/entities/friend.entity';
+import { NotificationModule } from './notification/notification.module';
+import { Notification } from './notification/entities/notification.entity';
 
 @Module({
   imports: [
@@ -45,6 +48,8 @@ import { FriendsModule } from './friends/friends.module';
         WallPost,
         WallPostLike,
         WallPostComment,
+        Friend,
+        Notification,
       ],
       synchronize: true,
     }),
@@ -60,6 +65,7 @@ import { FriendsModule } from './friends/friends.module';
     OptionsPostModule,
     WallPostCommentsModule,
     FriendsModule,
+    NotificationModule,
   ],
   controllers: [AppController],
   providers: [AppService],

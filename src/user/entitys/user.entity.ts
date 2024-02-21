@@ -1,6 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { PhotoUser } from 'src/userphoto/entitys/photo.entity';
 import { CommentsPhoto } from 'src/comments-photo/entities/comments-photo.entity';
+import { Friend } from 'src/friends/entities/friend.entity';
 
 @Entity('user')
 export class User {
@@ -36,4 +37,6 @@ export class User {
   photos: PhotoUser[];
   @OneToMany(() => CommentsPhoto, (comment) => comment.user)
   commentsPhoto: CommentsPhoto[];
+  @OneToMany(() => Friend, (friend) => friend.user)
+  friends: Friend[];
 }
