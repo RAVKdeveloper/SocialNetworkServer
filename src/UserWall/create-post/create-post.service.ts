@@ -7,7 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as path from 'path';
 import * as fs from 'fs';
-import { ILike } from 'typeorm';
+import { ILike, Not } from 'typeorm';
 
 import { WallPost } from './entities/create-post.entity';
 import { CreateCreatePostDto } from './dto/create-create-post.dto';
@@ -67,6 +67,39 @@ export class CreatePostService {
     post.visible += 1;
 
     return await this.postRepo.save(post);
+  }
+
+  async findGlobalWall(query: QueryPostDto, userId: number) {
+    if (query.action === 'all') {
+      const posts = await this.postRepo.find({
+        relations: {
+          user: true,
+          likes: true,
+          comments: true,
+        },
+        where: { visibleAction: 'all', user: { id: Not(userId) } },
+        take: +query.limit,
+        skip: Number(+query.limit * (+query.page - 1)),
+        order: { visible: 'DESC' },
+      });
+      const count = await this.postRepo.countBy({
+        visibleAction: 'all',
+        user: { id: Not(userId) },
+      });
+
+      return [posts, count];
+    } else if (query.action === 'search' && query.searchText) {
+      return await this.postRepo.findAndCount({
+        relations: { user: true, likes: true, comments: true },
+        where: {
+          visibleAction: 'all',
+          text: ILike(`%${query.searchText.toLowerCase()}%`),
+          user: { id: Not(userId) },
+        },
+        take: +query.limit,
+        order: { visible: 'DESC', createAt: 'DESC' },
+      });
+    } else throw new BadRequestException('Не указан action запроса');
   }
 
   async uploadMedia(userId: number, fileName: string, postId: number) {

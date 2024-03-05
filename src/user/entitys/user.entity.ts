@@ -25,10 +25,10 @@ export class User {
   avatar: string;
   @Column()
   password: string;
-  @Column({ default: '0' })
-  followers: string;
-  @Column({ default: '0' })
-  following: string;
+  @Column({ default: 0 })
+  followers: number;
+  @Column({ default: 0 })
+  following: number;
   @Column()
   birthday: string;
   @Column()

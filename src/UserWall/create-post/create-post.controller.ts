@@ -53,6 +53,12 @@ export class WallPostController {
     return this.service.findAll(query, request.user.sub);
   }
 
+  @UseGuards(AuthGuard)
+  @Get('globalWall')
+  findGlobal(@Query() query: QueryPostDto, @Req() request) {
+    return this.service.findGlobalWall(query, request.user.sub);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.service.findOne(+id);

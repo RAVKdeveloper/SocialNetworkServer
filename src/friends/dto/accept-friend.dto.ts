@@ -7,4 +7,6 @@ export class AcceptFriendsDto {
   readonly sendFromId: number;
   @IsNotEmpty()
   readonly id: number;
+  @IsNotEmpty()
+  readonly notificId: number;
 }

@@ -12,6 +12,7 @@ import {
 import { FriendsService } from './friends.service';
 import { CreateFriendDto } from './dto/create-friend.dto';
 import { AcceptFriendsDto } from './dto/accept-friend.dto';
+import { WallPreviewFriendsPreviewDto } from './dto/wallPreview.dto';
 import { AuthGuard } from 'src/user/guards/local-auth.guard';
 
 @Controller('friends')
@@ -19,7 +20,7 @@ export class FriendsController {
   constructor(private readonly service: FriendsService) {}
   @UseGuards(AuthGuard)
   @Post()
-  inviteFrind(@Body() dto: CreateFriendDto, @Req() request) {
+  inviteFriend(@Body() dto: CreateFriendDto, @Req() request) {
     return this.service.create(dto, request.user.sub);
   }
 
@@ -39,6 +40,12 @@ export class FriendsController {
   @Get('preview')
   findPreview(@Req() request, @Query('limit') limit: number) {
     return this.service.findPreview(request.user.sub, limit);
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('wallPreview')
+  wallFriends(@Query() query: WallPreviewFriendsPreviewDto, @Req() req) {
+    return this.service.wallPreview(query, req.user.sub);
   }
 
   @Get(':id')
